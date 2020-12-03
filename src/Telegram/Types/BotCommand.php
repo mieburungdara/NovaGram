@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a bot command.
 */
-class BotCommand extends \Telegram\BotCommand{
+class BotCommand extends Type{
 
     use simpleProto;
 

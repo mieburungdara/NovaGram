@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
 */
-class PassportElementErrorTranslationFile extends \Telegram\PassportElementErrorTranslationFile{
+class PassportElementErrorTranslationFile extends Type{
 
     use simpleProto;
 

@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a voice note.
 */
-class Voice extends \Telegram\Voice{
+class Voice extends Type{
 
     use simpleProto;
 

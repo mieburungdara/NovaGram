@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object contains information about an incoming pre-checkout query.
 */
-class PreCheckoutQuery extends \Telegram\PreCheckoutQuery{
+class PreCheckoutQuery extends Type{
 
     use simpleProto;
 

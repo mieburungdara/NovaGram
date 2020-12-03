@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object contains basic information about a successful payment.
 */
-class SuccessfulPayment extends \Telegram\SuccessfulPayment{
+class SuccessfulPayment extends Type{
 
     use simpleProto;
 

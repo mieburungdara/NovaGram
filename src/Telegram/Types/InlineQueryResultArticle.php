@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a link to an article or web page.
 */
-class InlineQueryResultArticle extends \Telegram\InlineQueryResultArticle{
+class InlineQueryResultArticle extends Type{
 
     use simpleProto;
 

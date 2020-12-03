@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents an animated emoji that displays a random value.
 */
-class Dice extends \Telegram\Dice{
+class Dice extends Type{
 
     use simpleProto;
 

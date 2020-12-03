@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents an audio file to be treated as music to be sent.
 */
-class InputMediaAudio extends \Telegram\InputMediaAudio{
+class InputMediaAudio extends Type{
 
     use simpleProto;
 

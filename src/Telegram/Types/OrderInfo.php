@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents information about an order.
 */
-class OrderInfo extends \Telegram\OrderInfo{
+class OrderInfo extends Type{
 
     use simpleProto;
 

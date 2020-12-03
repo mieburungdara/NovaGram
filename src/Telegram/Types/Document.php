@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a general file (as opposed to photos, voice messages and audio files).
 */
-class Document extends \Telegram\Document{
+class Document extends Type{
 
     use simpleProto;
 

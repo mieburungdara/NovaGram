@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a sticker set.
 */
-class StickerSet extends \Telegram\StickerSet{
+class StickerSet extends Type{
 
     use simpleProto;
 

@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object contains information about a poll.
 */
-class Poll extends \Telegram\Poll{
+class Poll extends Type{
 
     use simpleProto;
 

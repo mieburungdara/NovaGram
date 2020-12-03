@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents the content of a text message to be sent as the result of an inline query.
 */
-class InputTextMessageContent extends \Telegram\InputTextMessageContent{
+class InputTextMessageContent extends Type{
 
     use simpleProto;
 

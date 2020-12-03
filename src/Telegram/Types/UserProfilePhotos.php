@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represent a user's profile pictures.
 */
-class UserProfilePhotos extends \Telegram\UserProfilePhotos{
+class UserProfilePhotos extends Type{
 
     use simpleProto;
 

@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a photo to be sent.
 */
-class InputMediaPhoto extends \Telegram\InputMediaPhoto{
+class InputMediaPhoto extends Type{
 
     use simpleProto;
 

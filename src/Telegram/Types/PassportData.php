@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Contains information about Telegram Passport data shared with the bot by the user.
 */
-class PassportData extends \Telegram\PassportData{
+class PassportData extends Type{
 
     use simpleProto;
 

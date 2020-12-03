@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a point on the map.
 */
-class Location extends \Telegram\Location{
+class Location extends Type{
 
     use simpleProto;
 

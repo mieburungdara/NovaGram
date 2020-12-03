@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object contains basic information about an invoice.
 */
-class Invoice extends \Telegram\Invoice{
+class Invoice extends Type{
 
     use simpleProto;
 

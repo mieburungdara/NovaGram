@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Describes actions that a non-administrator user is allowed to take in a chat.
 */
-class ChatPermissions extends \Telegram\ChatPermissions{
+class ChatPermissions extends Type{
 
     use simpleProto;
 

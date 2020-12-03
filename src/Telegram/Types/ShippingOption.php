@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents one shipping option.
 */
-class ShippingOption extends \Telegram\ShippingOption{
+class ShippingOption extends Type{
 
     use simpleProto;
 

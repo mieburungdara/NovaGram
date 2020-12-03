@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents one row of the high scores table for a game.
 */
-class GameHighScore extends \Telegram\GameHighScore{
+class GameHighScore extends Type{
 
     use simpleProto;
 

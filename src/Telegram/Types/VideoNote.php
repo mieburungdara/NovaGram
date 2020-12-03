@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a video message (available in Telegram apps as of v.4.0).
 */
-class VideoNote extends \Telegram\VideoNote{
+class VideoNote extends Type{
 
     use simpleProto;
 

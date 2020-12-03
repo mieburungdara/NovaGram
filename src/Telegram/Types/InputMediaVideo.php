@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a video to be sent.
 */
-class InputMediaVideo extends \Telegram\InputMediaVideo{
+class InputMediaVideo extends Type{
 
     use simpleProto;
 

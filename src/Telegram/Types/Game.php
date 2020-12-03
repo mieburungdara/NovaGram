@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
 */
-class Game extends \Telegram\Game{
+class Game extends Type{
 
     use simpleProto;
 

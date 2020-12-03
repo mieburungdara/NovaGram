@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a result of an inline query that was chosen by the user and sent to their chat partner.
 */
-class ChosenInlineResult extends \Telegram\ChosenInlineResult{
+class ChosenInlineResult extends Type{
 
     use simpleProto;
 

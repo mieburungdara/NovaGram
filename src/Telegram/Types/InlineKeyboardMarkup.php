@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents an inline keyboard that appears right next to the message it belongs to.
 */
-class InlineKeyboardMarkup extends \Telegram\InlineKeyboardMarkup{
+class InlineKeyboardMarkup extends Type{
 
     use simpleProto;
 

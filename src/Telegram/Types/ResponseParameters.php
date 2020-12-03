@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Contains information about why a request was unsuccessful.
 */
-class ResponseParameters extends \Telegram\ResponseParameters{
+class ResponseParameters extends Type{
 
     use simpleProto;
 

@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a general file to be sent.
 */
-class InputMediaDocument extends \Telegram\InputMediaDocument{
+class InputMediaDocument extends Type{
 
     use simpleProto;
 

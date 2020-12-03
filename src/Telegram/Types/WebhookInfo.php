@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Contains information about the current status of a webhook.
 */
-class WebhookInfo extends \Telegram\WebhookInfo{
+class WebhookInfo extends Type{
 
     use simpleProto;
 

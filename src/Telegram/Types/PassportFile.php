@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
 */
-class PassportFile extends \Telegram\PassportFile{
+class PassportFile extends Type{
 
     use simpleProto;
 

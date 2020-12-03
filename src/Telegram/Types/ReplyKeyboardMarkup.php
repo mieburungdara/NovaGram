@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 */
-class ReplyKeyboardMarkup extends \Telegram\ReplyKeyboardMarkup{
+class ReplyKeyboardMarkup extends Type{
 
     use simpleProto;
 

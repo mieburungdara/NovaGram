@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Contains information about documents or other Telegram Passport elements shared with the bot by the user.
 */
-class EncryptedPassportElement extends \Telegram\EncryptedPassportElement{
+class EncryptedPassportElement extends Type{
 
     use simpleProto;
 

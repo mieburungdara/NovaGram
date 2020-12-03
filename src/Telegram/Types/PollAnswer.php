@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents an answer of a user in a non-anonymous poll.
 */
-class PollAnswer extends \Telegram\PollAnswer{
+class PollAnswer extends Type{
 
     use simpleProto;
 

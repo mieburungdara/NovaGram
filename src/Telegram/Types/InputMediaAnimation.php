@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 */
-class InputMediaAnimation extends \Telegram\InputMediaAnimation{
+class InputMediaAnimation extends Type{
 
     use simpleProto;
 
