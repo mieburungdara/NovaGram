@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents the content of a location message to be sent as the result of an inline query.
 */
-class InputLocationMessageContent extends Type{
+class InputLocationMessageContent extends \Telegram\InputLocationMessageContent{
 
     use simpleProto;
 

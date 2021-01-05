@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object contains information about an incoming shipping query.
 */
-class ShippingQuery extends Type{
+class ShippingQuery extends \Telegram\ShippingQuery{
 
     use simpleProto;
 

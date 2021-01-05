@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
 */
-class KeyboardButtonPollType extends Type{
+class KeyboardButtonPollType extends \Telegram\KeyboardButtonPollType{
 
     use simpleProto;
 

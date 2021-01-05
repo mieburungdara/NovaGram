@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object contains information about one answer option in a poll.
 */
-class PollOption extends Type{
+class PollOption extends \Telegram\PollOption{
 
     use simpleProto;
 

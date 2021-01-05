@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a chat.
 */
-class Chat extends Type{
+class Chat extends \Telegram\Chat{
 
     use simpleProto;
 

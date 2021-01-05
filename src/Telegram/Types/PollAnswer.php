@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents an answer of a user in a non-anonymous poll.
 */
-class PollAnswer extends Type{
+class PollAnswer extends \Telegram\PollAnswer{
 
     use simpleProto;
 
@@ -18,8 +18,8 @@ class PollAnswer extends Type{
     /** @var User The user, who changed the answer to the poll */
     public User $user;
 
-    /** @var stdClass 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote. */
-    public stdClass $option_ids;
+    /** @var ObjectsList 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote. */
+    public ObjectsList $option_ids;
 
     
 }

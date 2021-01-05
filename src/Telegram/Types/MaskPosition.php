@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object describes the position on faces where a mask should be placed by default.
 */
-class MaskPosition extends Type{
+class MaskPosition extends \Telegram\MaskPosition{
 
     use simpleProto;
 

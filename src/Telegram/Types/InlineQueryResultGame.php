@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a Game.
 */
-class InlineQueryResultGame extends Type{
+class InlineQueryResultGame extends \Telegram\InlineQueryResultGame{
 
     use simpleProto;
 

@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
 */
-class PassportElementErrorTranslationFiles extends Type{
+class PassportElementErrorTranslationFiles extends \Telegram\PassportElementErrorTranslationFiles{
 
     use simpleProto;
 
@@ -18,8 +18,8 @@ class PassportElementErrorTranslationFiles extends Type{
     /** @var string Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration” */
     public string $type;
 
-    /** @var stdClass List of base64-encoded file hashes */
-    public stdClass $file_hashes;
+    /** @var ObjectsList List of base64-encoded file hashes */
+    public ObjectsList $file_hashes;
 
     /** @var string Error message */
     public string $message;

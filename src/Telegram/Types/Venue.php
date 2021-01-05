@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a venue.
 */
-class Venue extends Type{
+class Venue extends \Telegram\Venue{
 
     use simpleProto;
 

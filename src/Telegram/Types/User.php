@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a Telegram user or bot.
 */
-class User extends Type{
+class User extends \Telegram\User{
 
     use simpleProto;
 

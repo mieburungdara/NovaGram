@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a phone contact.
 */
-class Contact extends Type{
+class Contact extends \Telegram\Contact{
 
     use simpleProto;
 

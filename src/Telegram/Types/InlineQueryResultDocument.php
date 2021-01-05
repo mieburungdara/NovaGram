@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
 */
-class InlineQueryResultDocument extends Type{
+class InlineQueryResultDocument extends \Telegram\InlineQueryResultDocument{
 
     use simpleProto;
 
@@ -27,8 +27,8 @@ class InlineQueryResultDocument extends Type{
     /** @var string|null Mode for parsing entities in the document caption. See formatting options for more details. */
     public ?string $parse_mode = null;
 
-    /** @var stdClass|null List of special entities that appear in the caption, which can be specified instead of parse_mode */
-    public ?stdClass $caption_entities = null;
+    /** @var ObjectsList|null List of special entities that appear in the caption, which can be specified instead of parse_mode */
+    public ?ObjectsList $caption_entities = null;
 
     /** @var string A valid URL for the file */
     public string $document_url;

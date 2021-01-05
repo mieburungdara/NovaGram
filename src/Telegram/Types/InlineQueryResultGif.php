@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
 */
-class InlineQueryResultGif extends Type{
+class InlineQueryResultGif extends \Telegram\InlineQueryResultGif{
 
     use simpleProto;
 
@@ -45,8 +45,8 @@ class InlineQueryResultGif extends Type{
     /** @var string|null Mode for parsing entities in the caption. See formatting options for more details. */
     public ?string $parse_mode = null;
 
-    /** @var stdClass|null List of special entities that appear in the caption, which can be specified instead of parse_mode */
-    public ?stdClass $caption_entities = null;
+    /** @var ObjectsList|null List of special entities that appear in the caption, which can be specified instead of parse_mode */
+    public ?ObjectsList $caption_entities = null;
 
     /** @var InlineKeyboardMarkup|null Inline keyboard attached to the message */
     public ?InlineKeyboardMarkup $reply_markup = null;

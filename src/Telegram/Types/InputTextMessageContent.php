@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents the content of a text message to be sent as the result of an inline query.
 */
-class InputTextMessageContent extends Type{
+class InputTextMessageContent extends \Telegram\InputTextMessageContent{
 
     use simpleProto;
 
@@ -18,8 +18,8 @@ class InputTextMessageContent extends Type{
     /** @var string|null Mode for parsing entities in the message text. See formatting options for more details. */
     public ?string $parse_mode = null;
 
-    /** @var stdClass|null List of special entities that appear in message text, which can be specified instead of parse_mode */
-    public ?stdClass $entities = null;
+    /** @var ObjectsList|null List of special entities that appear in message text, which can be specified instead of parse_mode */
+    public ?ObjectsList $entities = null;
 
     /** @var bool|null Disables link previews for links in the sent message */
     public ?bool $disable_web_page_preview = null;

@@ -1,13 +1,46 @@
 <?php
-
+$baseMemory = memory_get_usage();
 require __DIR__ . '/../vendor/autoload.php';
+require 'TelegramHandler.php';
+require 'time.php';
 
-use skrtdev\NovaGram\Bot;
-use skrtdev\NovaGram\BaseHandler;
+use skrtdev\NovaGram\{Bot, Time, BaseHandler, BaseCommandHandler};
 use skrtdev\Telegram\{Update, Message, CallbackQuery};
 use skrtdev\NovaGram\Exception as NovaGramException;
 use skrtdev\Telegram\Exception as TelegramException;
 use Monolog\Logger;
+use Monolog\Handler\TelegramHandler;
+use skrtdev\Prototypes\{Prototypeable, proto};
+
+function formatSizeUnits(int $bytes)
+{
+    if ($bytes >= 1073741824)
+    {
+        $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+    }
+    elseif ($bytes >= 1048576)
+    {
+        $bytes = number_format($bytes / 1048576, 2) . ' MB';
+    }
+    elseif ($bytes >= 1024)
+    {
+        $bytes = number_format($bytes / 1024, 2) . ' KB';
+    }
+    elseif ($bytes > 1)
+    {
+        $bytes = $bytes . ' bytes';
+    }
+    elseif ($bytes == 1)
+    {
+        $bytes = $bytes . ' byte';
+    }
+    else
+    {
+        $bytes = '0 bytes';
+    }
+
+    return $bytes;
+}
 
 class Filters{
 
@@ -79,13 +112,18 @@ Bot::addMethod("onMessageFilter", function (Closure $filters, Closure $handler) 
     });
 });
 
+$time = new Time;
+
 $Bot = new Bot("722952667:AAE-N5BNWRdDlAZQuNzUsxc7HKuoYHkyphs", [
+    "username" => "wrzybot",
     "restart_on_changes" => true,
+    "debug" => 634408248,
     #"bot_api_url" => "http://localhost:8081",
-    #"async" => false
+    #"async" => false,
     "command_prefixes" => ['/', '.'],
     #"logger" => Logger::DEBUG,
-    "group_handlers" => false,
+    #"group_handlers" => false,
+    "threshold" => 820,
     #"wait_handlers" => true,
     "database" => [
         "driver" => "sqlite", // default to mysql
@@ -93,9 +131,25 @@ $Bot = new Bot("722952667:AAE-N5BNWRdDlAZQuNzUsxc7HKuoYHkyphs", [
     ]
 ]);
 
+var_dump($time().'ms');
+#var_dump($Bot instanceof Prototypeable);
+
+/*
+set_error_handler(function (int $errno, string $errstr, $errfile, $errline) use ($Bot) {
+    // $errstr may need to be escaped:
+    $errstr = htmlspecialchars($errstr);
+
+    $str = "Error: $errstr in $errfile:$errline";
+    $Bot->debug($str);
+
+    return true;
+});
+*/
+
 class Handler extends BaseHandler{
-    public function onUpdate(Bot $Bot, Update $update)
+/*    public function onUpdate(Update $update)
     {
+        $Bot = $this->Bot;
         #print("afammoc");
 
         if(isset($update->message)){ // update is a message
@@ -110,10 +164,36 @@ class Handler extends BaseHandler{
             #yield delay(1000);
         }
     }
+*/
+    public function onEditedMessage(Message $message)
+    {
+        $Bot = $this->Bot;
+        $message->reply("FAMMOC HAI MODIFIACATO");
+    }
+
+    public function onMessage(Message $message)
+    {
+        #$message->reply("afammoc from class ONMESSAGE AEEEEE");
+    }
+}
+
+class CommandHandler extends BaseCommandHandler{
+
+    protected Bot $Bot;
+    /* @var string|array */
+    protected /* string|array */ $commands = "start";
+    protected string $description;
+
+
+    public function handle(Message $message){
+        $message->reply("COMMAND HANDLER");
+    }
+
 }
 
 #var_dump(Filters::TextMessage() | Filters::TextMessage());
 
+/*
 $Bot->onMessage_(new Filters(Filters::TextMessage()), function (Message $message) {
     $message->reply("text message");
 });
@@ -130,6 +210,7 @@ $Bot->onMessage_(new Filters(Filters::commands("start")), function (Message $mes
 $Bot->onMessage_(new Filters(Filters::commands("dc")), function (Message $message) {
     $message->reply($message->from->getDC());
 });
+*/
 
 $Bot->onTextMessage(function (Message $message) {
     $message->reply("on text message handler");
@@ -166,10 +247,19 @@ $Bot->onCommand('start', function (Message $message) use ($Bot) {
     #$message->reply(print_r($message, true));
     #$message->reply(print_r($message->from->getConversations(), true));
     #$message->from->conversation(generateRandomString(), generateRandomString(), false);
-    $Bot->sendMessage(chat_id: $message->from->id, text: "Ciao kek");
-    $message->reply("ae comando start", text: "Ops sovrascritto");
+    #$Bot->sendMessage(chat_id: $message->from->id, text: "Ciao kek");
+    #$message->reply("ae comando start", text: "Ops sovrascritto");
     sleep(10);
     $message->reply("after 10");
+});
+
+$Bot->onCommand('propic', function (Message $message) use ($Bot) {
+    $photos = $message->from->getProfilePhotos();
+    #var_dump($photos);
+    var_dump($photos->photos->{'0'});
+    foreach ($photos->photos as $photo) {
+        $message->chat->sendPhoto($photo[0]->file_id);
+    }
 });
 
 $Bot->onCommand('stop', function (Message $message) use ($Bot) {
@@ -177,14 +267,18 @@ $Bot->onCommand('stop', function (Message $message) use ($Bot) {
     sleep(1);
     posix_kill(posix_getppid(), SIGINT);
 });
-
+/*
 $Bot->onMessageFilter(fn($message) => $message->text === "F", function (Message $message) {
-    $message->reply("onMessageFilter F FOR YOU");
+    $inline[] = [ ["text" => "Annulla", "callback_data" => "home"] ];
+
+    $message->reply("onMessageFilter F FOR YOU", reply_markup: ["inline_keyboard" => $inline]);
+});
+*/
+$Bot->onCallbackQuery(function (CallbackQuery $callback_query) {
+    $callback_query->answer($callback_query->from->getDC(), ["show_alert" => true]);
 });
 
-$Bot->onCallbackQuery(function (CallbackQuery $callback_query) {
-    $callback_query->answer($callback_query->from->getDC());
-});
+$Bot->onCallbackData("home", fn($cb) => $cb->message->editText("WORKAAAA"));
 
 /*
 $Bot->onUpdate(function (Update $update) use ($Bot) {
@@ -200,12 +294,18 @@ $Bot->onUpdate(function (Update $update) use ($Bot) {
 
 
 $Bot->addErrorHandler(function (Throwable $e) {
-    print("Caught ".get_class($e)." exception from general handler".PHP_EOL);
-    #print($e.PHP_EOL);
+    #print("Caught ".get_class($e)." exception from general handler".PHP_EOL);
+    print($e.PHP_EOL);
+    #exit;
 });
 
 #$Bot->handleClass(Handler::class);
 
-$Bot->idle();
+$Bot->addCommandHandler(CommandHandler::class);
 
+#Bot::addMethod("onMessage_", fn() => true);
+
+echo formatSizeUnits(memory_get_usage() - $baseMemory), PHP_EOL;
+$Bot->idle();
+echo "AFTER IDLE (LOL)";
 ?>

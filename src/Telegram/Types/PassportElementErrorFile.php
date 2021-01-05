@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
 */
-class PassportElementErrorFile extends Type{
+class PassportElementErrorFile extends \Telegram\PassportElementErrorFile{
 
     use simpleProto;
 

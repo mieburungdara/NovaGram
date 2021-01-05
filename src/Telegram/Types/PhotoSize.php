@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents one size of a photo or a file / sticker thumbnail.
 */
-class PhotoSize extends Type{
+class PhotoSize extends \Telegram\PhotoSize{
 
     use simpleProto;
 

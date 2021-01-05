@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
 */
-class InlineQueryResultVoice extends Type{
+class InlineQueryResultVoice extends \Telegram\InlineQueryResultVoice{
 
     use simpleProto;
 
@@ -30,8 +30,8 @@ class InlineQueryResultVoice extends Type{
     /** @var string|null Mode for parsing entities in the voice message caption. See formatting options for more details. */
     public ?string $parse_mode = null;
 
-    /** @var stdClass|null List of special entities that appear in the caption, which can be specified instead of parse_mode */
-    public ?stdClass $caption_entities = null;
+    /** @var ObjectsList|null List of special entities that appear in the caption, which can be specified instead of parse_mode */
+    public ?ObjectsList $caption_entities = null;
 
     /** @var int|null Recording duration in seconds */
     public ?int $voice_duration = null;

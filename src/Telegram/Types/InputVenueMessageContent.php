@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents the content of a venue message to be sent as the result of an inline query.
 */
-class InputVenueMessageContent extends Type{
+class InputVenueMessageContent extends \Telegram\InputVenueMessageContent{
 
     use simpleProto;
 

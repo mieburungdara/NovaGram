@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a sticker set.
 */
-class StickerSet extends Type{
+class StickerSet extends \Telegram\StickerSet{
 
     use simpleProto;
 
@@ -24,8 +24,8 @@ class StickerSet extends Type{
     /** @var bool True, if the sticker set contains masks */
     public bool $contains_masks;
 
-    /** @var stdClass List of all set stickers */
-    public stdClass $stickers;
+    /** @var ObjectsList List of all set stickers */
+    public ObjectsList $stickers;
 
     /** @var PhotoSize|null Sticker set thumbnail in the .WEBP or .TGS format */
     public ?PhotoSize $thumb = null;

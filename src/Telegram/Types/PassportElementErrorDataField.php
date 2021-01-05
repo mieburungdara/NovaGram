@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
 */
-class PassportElementErrorDataField extends Type{
+class PassportElementErrorDataField extends \Telegram\PassportElementErrorDataField{
 
     use simpleProto;
 

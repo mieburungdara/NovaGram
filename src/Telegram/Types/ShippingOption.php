@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents one shipping option.
 */
-class ShippingOption extends Type{
+class ShippingOption extends \Telegram\ShippingOption{
 
     use simpleProto;
 
@@ -18,8 +18,8 @@ class ShippingOption extends Type{
     /** @var string Option title */
     public string $title;
 
-    /** @var stdClass List of price portions */
-    public stdClass $prices;
+    /** @var ObjectsList List of price portions */
+    public ObjectsList $prices;
 
     
 }

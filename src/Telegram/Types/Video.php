@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a video file.
 */
-class Video extends Type{
+class Video extends \Telegram\Video{
 
     use simpleProto;
 

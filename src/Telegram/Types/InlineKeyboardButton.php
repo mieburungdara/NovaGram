@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
 */
-class InlineKeyboardButton extends Type{
+class InlineKeyboardButton extends \Telegram\InlineKeyboardButton{
 
     use simpleProto;
 

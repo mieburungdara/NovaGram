@@ -12,9 +12,13 @@ class Database{
 
     const driver_options = [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY];
 
-    private array $settings;
-    private PDO $pdo;
-    private string $prefix;
+    protected array $settings;
+
+    /**
+     * @var PDO|PDOContainer $pdo
+     */
+    protected /*PDO|PDOContainer*/ $pdo;
+    protected string $prefix;
 
     public function __construct(array $settings, PDO $pdo = null){
 
@@ -30,6 +34,7 @@ class Database{
         @[ // fix this
             "driver" => $driver,
             "host" => $host,
+            "port" => $port,
             "dbname" => $dbname,
             "dbuser" => $dbuser,
             "dbpass" => $dbpass
@@ -41,6 +46,10 @@ class Database{
             case 'sqlite':
                 $connection = $host;
                 break;
+            case 'pgsql':
+                $connection = "host=$host;port=$port;dbname=$dbname";
+                break;
+
             default:
                 $connection = "host=$host;dbname=$dbname";
                 break;
@@ -52,12 +61,17 @@ class Database{
            # PDO::ATTR_EMULATE_PREPARES => false,
         ];
 
-        $this->pdo = $pdo ?? new PDO("$driver:$connection", $dbuser, $dbpass, $options);
+        $this->pdo = $pdo ?? new PDOContainer("$driver:$connection", $dbuser, $dbpass, $options);
 
         $prefix = $settings['prefix'] ?? null;
         $this->prefix = isset($prefix) ? $prefix."_" : "";
 
         $this->auto_increment = $driver === "sqlite" ? "AUTOINCREMENT" : "AUTO_INCREMENT";
+        /*$this->auto_increment = match($driver){
+            "sqlite": "AUTOINCREMENT",
+            default: "SERIAL"
+        };*/
+        #$this->auto_increment = "SERIAL";
         $this->initializeTableNames();
         $this->initializeQueries();
         $this->initializeDatabase();
@@ -83,18 +97,19 @@ class Database{
             "getConversationsByChat" => "SELECT * FROM {$this->tableNames['conversations']} WHERE chat_id = :chat_id",
             "getConversationsByValue" => "SELECT * FROM {$this->tableNames['conversations']} WHERE value = :value",
         ];
+        $this->id_auto_increment_type = $this->settings['driver'] === "pgsql" ? "SERIAL" : "INTEGER PRIMARY KEY {$this->auto_increment}";
     }
 
     private function initializeDatabase(): void{
         $this->query("CREATE TABLE IF NOT EXISTS {$this->tableNames['users']} (
-            id INTEGER PRIMARY KEY {$this->auto_increment},
+            id {$this->id_auto_increment_type},
             user_id BIGINT(255) UNIQUE
         )");
     }
 
     public function initializeConversations(): void{
         $this->query("CREATE TABLE IF NOT EXISTS {$this->tableNames['conversations']} (
-            id INTEGER PRIMARY KEY {$this->auto_increment},
+            id {$this->id_auto_increment_type},
             chat_id BIGINT(255) NOT NULL,
             name VARCHAR(64) NOT NULL,
             value BLOB(4096) NOT NULL,
@@ -183,12 +198,24 @@ class Database{
     }
 
     public function getLastInsertId(): int{
-        return $this->pdo->query("SELECT LAST_INSERT_ID() as id")->fetch()['id'];
+        return $this->getPDO()->query("SELECT LAST_INSERT_ID() as id")->fetch()['id'];
     }
 
     public function query(string $query, array $params = []){
-        $sth = $this->pdo->prepare($query, self::driver_options);
-        $sth->execute($params);
+        $sth = $this->getPDO()->prepare($query, self::driver_options);
+        try{
+            $sth->execute($params);
+        }
+        catch (\PDOException $e) {
+            if($e->getMessage() === "SQLSTATE[HY000]: General error: 2006 MySQL server has gone away") {
+                echo "retrying... ";
+                $this->resetPDO();
+                return $this->query(...func_get_args());
+            }
+            else{
+                throw $e;
+            }
+        }
         return $sth;
     }
     public function existQuery(string $query, array $params = []): bool{
@@ -197,7 +224,14 @@ class Database{
     }
 
     public function getPDO(): PDO{
-        return $this->pdo;
+        return $this->pdo instanceof PDOContainer ? $this->pdo->getPDO() : $this->pdo;
+    }
+
+    public function resetPDO()
+    {
+        if($this->settings['driver'] === "mysql" && $this->pdo instanceof PDOContainer){
+            $this->pdo->reset();
+        }
     }
 
     public function normalizeConversation(array $conversation)

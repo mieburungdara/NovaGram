@@ -8,12 +8,12 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
 */
-class ReplyKeyboardMarkup extends Type{
+class ReplyKeyboardMarkup extends \Telegram\ReplyKeyboardMarkup{
 
     use simpleProto;
 
-    /** @var stdClass Array of button rows, each represented by an Array of KeyboardButton objects */
-    public stdClass $keyboard;
+    /** @var ObjectsList Array of button rows, each represented by an Array of KeyboardButton objects */
+    public ObjectsList $keyboard;
 
     /** @var bool|null Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons). Defaults to false, in which case the custom keyboard is always of the same height as the app's standard keyboard. */
     public ?bool $resize_keyboard = null;

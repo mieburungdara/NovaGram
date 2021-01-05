@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
 */
-class MessageEntity extends Type{
+class MessageEntity extends \Telegram\MessageEntity{
 
     use simpleProto;
 

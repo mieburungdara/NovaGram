@@ -8,7 +8,7 @@ use skrtdev\Prototypes\simpleProto;
 /**
  * This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
 */
-class Animation extends Type{
+class Animation extends \Telegram\Animation{
 
     use simpleProto;
 

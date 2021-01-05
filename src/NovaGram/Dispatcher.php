@@ -39,8 +39,43 @@ class Dispatcher {
 
     public function handleUpdate(Update $update): void
     {
+        $time = new Time;
         $this->resolveQueue();
+        if($this->async){
+            if($this->Bot->hasDatabase()){
+                $this->Bot->getDatabase()->resetPDO();
+            }
+            $process_name = "NovaGram: child process ({$this->Bot->getUsername()}:{$update->update_id})";
+        }
+        
         $final_handlers = [];
+        foreach ($this->class_handlers as $handler) {
+            $real_handler = function () use ($handler, $update) {
+                try{
+                    Closure::fromCallable([$handler, "handle"])($update);
+                }
+                catch(Throwable $e){
+                    $this->handleError($e);
+                }
+            };
+            if($this->async){
+                if($this->group_handlers){
+                    $final_handlers[] = $real_handler;
+                }
+                else{
+                    $this->pool->parallel($real_handler, $process_name);
+                }
+            }
+            else{
+                try{
+                    $real_handler();
+                }
+                catch(Throwable $e){
+                    $this->handleError($e);
+                }
+            }
+        }
+
         foreach ($this->closure_handlers as $parameter => $handlers) {
             if($parameter === "update"){
                 $handler_update = $update;
@@ -65,7 +100,7 @@ class Dispatcher {
                         $final_handlers[] = $real_handler;
                     }
                     else{
-                        $this->pool->parallel($real_handler);
+                        $this->pool->parallel($real_handler, $process_name);
                     }
                 }
                 else{
@@ -74,33 +109,17 @@ class Dispatcher {
             }
         }
 
-        foreach ($this->class_handlers as $handler) {
-            $real_handler = fn() => Closure::fromCallable([$handler, "handle"])($update); // TODO ERROR HANDLING
-            if($this->async){
-                if($this->group_handlers){
-                    $final_handlers[] = $real_handler;
-                }
-                else{
-                    $this->pool->parallel($real_handler);
-                }
-            }
-            else{
-                try{
-                    $real_handler();
-                }
-                catch(Throwable $e){
-                    $this->handleError($e);
-                }
-            }
-        }
-
         if(!empty($final_handlers)){
-            $this->pool->parallel(function () use ($final_handlers) {
+            $this->pool->parallel(function () use ($final_handlers, $update) {
+                $this->Bot->logger->debug("Update handling started.", ['update_id' => $update->update_id]);
+                $started = hrtime(true)/10**9;
                 foreach ($final_handlers as $handler) {
                     $handler();
                 }
-            });
+                $this->Bot->logger->debug("Update handling finished.", ['update_id' => $update->update_id, 'took' => (((hrtime(true)/10**9)-$started)*1000).'ms']);
+            }, $process_name);
         }
+        echo "total {$time()}ms", PHP_EOL;
     }
 
     protected function handleError(Throwable $e): void
@@ -158,13 +177,20 @@ class Dispatcher {
         $this->closure_handlers[$parameter][] = $handler;
     }
 
-    // BaseHandler|string
-    public function addClassHandler($handler): void
+    // string|array
+    public function addClassHandler($handlers): void
     {
-        if(is_string($handler)){
-            $handler = new $handler($this->Bot);
+        if(is_string($handlers)){
+            $handlers = [$handlers];
         }
-        $this->class_handlers[] = $handler;
+        foreach ($handlers as $handler) {
+            if(is_a($handler, BaseHandler::class, true)){
+                $this->class_handlers[] = new $handler($this->Bot);
+            }
+            else{
+                throw new Exception("Invalid class handler provided: $handler");
+            }
+        }
     }
 
     public function addErrorHandler(Closure $handler): void
@@ -182,20 +208,50 @@ class Dispatcher {
         return !empty($this->error_handlers);
     }
 
-    public static function paramaterToHandler(string $string): string
+    public static function parameterToHandler(string $string): string
     {
-        $str = str_replace('_', '', ucwords($string, '_'));
-        return "on".$str;
+        return "on".str_replace('_', '', ucwords($string, '_'));
+    }
+
+    public static function handlerToParameter(string $string): string
+    {
+        $string = substr($string, 2);
+        $string[0] = strtolower($string[0]);
+        $string = preg_replace('/([A-Z])/', '_${1}', $string);
+        $string = strtolower($string);
+        return $string;
+    }
+
+    public static function getUpdateType(Update $update): string
+    {
+        $properties = get_object_vars($update);
+        foreach ($properties as $key => $value) {
+            if($key !== "update_id" && isset($value)){
+                return $key;
+            }
+        }
     }
 
     public function getAllowedUpdates(): array
     {
-        if(!empty($this->class_handlers)) return [];
+        $params = [];
+        if(!empty($this->class_handlers)){
+            foreach ($this->class_handlers as $class_handler) {
+                foreach ($class_handler->getHandlers() as $value) {
+                    $value = self::handlerToParameter($value);
+                    if($value === "update"){
+                        // there is a general update handler, should retrieve all kind of updates
+                        return [];
+                    }
+                    $params[] = $value;
+                }
+            }
+        }
         if(isset($this->closure_handlers['update'])){
             // there is a general update handler, should retrieve all kind of updates
             return [];
         }
-        else return array_keys($this->closure_handlers);
+        else return array_values(array_unique(array_merge($params, array_keys($this->closure_handlers))));
     }
 
     public function resolveQueue(): void
