@@ -54,7 +54,151 @@ class Update extends \Telegram\Update{
     /** @var ChatMemberUpdated|null A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify “chat_member” in the list of allowed_updates to receive these updates. */
     public ?ChatMemberUpdated $chat_member = null;
 
-    
-}
+    /**
+     * Get the sender Id
+     * @return User_Id|null
+     */
+    public function UserID()
+    {
+        if ($this->message !== null) {
+            return $this->message->from->id ?? null;
+        }
 
-?>
+        if ($this->edited_message !== null) {
+            return $this->edited_message->from->id ?? null;
+        }
+
+        if ($this->channel_post !== null) {
+            return $this->channel_post->from->id ?? null;
+        }
+
+        if ($this->edited_channel_post !== null) {
+            return $this->edited_channel_post->from->id ?? null;
+        }
+
+        if ($this->inline_query !== null) {
+            return $this->inline_query->from->id;
+        }
+
+        if ($this->chosen_inline_result !== null) {
+            return $this->chosen_inline_result->from->id;
+        }
+
+        if ($this->callback_query !== null) {
+            return $this->callback_query->from->id;
+        }
+
+        if ($this->shipping_query !== null) {
+            return $this->shipping_query->from->id;
+        }
+
+        if ($this->pre_checkout_query !== null) {
+            return $this->pre_checkout_query->from->id;
+        }
+
+        if ($this->poll_answer !== null) {
+            return $this->poll_answer->user;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the sender first name
+     * @return text|null
+     */
+    public function FirstName()
+    {
+        if ($this->message !== null) {
+            return $this->message->from->first_name ?? null;
+        }
+
+        if ($this->edited_message !== null) {
+            return $this->edited_message->from->first_name ?? null;
+        }
+        if ($this->channel_post !== null) {
+            return $this->channel_post->from->first_name ?? null;
+        }
+
+        if ($this->callback_query !== null) {
+            return $this->callback_query->from->first_name;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the sender last name
+     * @return LastName|null
+     */
+    public function LastName()
+    {
+        if ($this->message !== null) {
+            return $this->message->from->last_name ?? null;
+        }
+
+        if ($this->edited_message !== null) {
+            return $this->edited_message->from->last_name ?? null;
+        }
+
+        if ($this->channel_post !== null) {
+            return $this->channel_post->from->last_name ?? null;
+        }
+
+        if ($this->callback_query !== null) {
+            return $this->callback_query->from->last_name;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the sender username
+     * @return LastName|null
+     */
+    public function Username()
+    {
+        if ($this->message !== null) {
+            return $this->message->from->username ?? null;
+        }
+
+        if ($this->edited_message !== null) {
+            return $this->edited_message->from->username ?? null;
+        }
+        if ($this->channel_post !== null) {
+            return $this->channel_post->from->username ?? null;
+        }
+
+        if ($this->callback_query !== null) {
+            return $this->callback_query->from->username;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the sender language
+     * @return Language|null
+     */
+    public function Language()
+    {
+        if ($this->message !== null) {
+            return $this->message->from->language_code ?? null;
+        }
+
+        if ($this->edited_message !== null) {
+            return $this->edited_message->from->language_code ?? null;
+        }
+
+        if ($this->channel_post !== null) {
+            return $this->channel_post->from->language_code ?? null;
+        }
+
+        if ($this->callback_query !== null) {
+            return $this->callback_query->from->language_code;
+        }
+
+        return null;
+    }
+
+}
